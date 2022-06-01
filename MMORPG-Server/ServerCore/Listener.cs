@@ -32,6 +32,7 @@ namespace ServerCore
 
         void RegisterAccept(SocketAsyncEventArgs _args)
         {
+            // 이전 AcceptSocket의 정보를 밀어줘야 한다
             _args.AcceptSocket = null;
 
             bool pending = listenSocket.AcceptAsync(_args);
