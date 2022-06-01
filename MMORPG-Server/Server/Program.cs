@@ -51,6 +51,7 @@ namespace Server
             IPEndPoint endPoint = new IPEndPoint(ipAddr, 7777);
 
             listener.InitSocket(endPoint, () => { return new GameSession(); });
+            Console.WriteLine("Listening...");
 
             while (true)
             {
