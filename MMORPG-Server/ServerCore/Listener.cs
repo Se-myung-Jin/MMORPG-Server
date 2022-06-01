@@ -12,9 +12,9 @@ namespace ServerCore
     {
         Socket listenSocket;
 
-        Action<Socket> onAcceptHandler;
+        Func<Session> sessionFactory;
 
-        public void InitSocket(IPEndPoint _endPoint, Action<Socket> _onAcceptHandler)
+        public void InitSocket(IPEndPoint _endPoint, Func<Session> _sessionFactory)
         {
             listenSocket = new Socket(_endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
@@ -27,7 +27,7 @@ namespace ServerCore
             args.Completed += new EventHandler<SocketAsyncEventArgs>(OnAcceptCompleted);
             RegisterAccept(args);
 
-            onAcceptHandler += _onAcceptHandler;
+            sessionFactory += _sessionFactory;
         }
 
         void RegisterAccept(SocketAsyncEventArgs _args)
@@ -44,7 +44,9 @@ namespace ServerCore
         {
             if (_args.SocketError == SocketError.Success)
             {
-                onAcceptHandler.Invoke(_args.AcceptSocket);
+                Session session = sessionFactory.Invoke();
+                session.Start(_args.AcceptSocket);
+                session.OnConnected(_args.AcceptSocket.RemoteEndPoint);
             }
             else
             {
