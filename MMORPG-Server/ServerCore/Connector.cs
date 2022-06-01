@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ServerCore
 {
-    class Connector
+    public class Connector
     {
         Func<Session> sessionFactory;
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ServerCore
 {
-    class Listener
+    public class Listener
     {
         Socket listenSocket;
 
