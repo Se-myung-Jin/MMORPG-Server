@@ -6,16 +6,30 @@ using System.Text;
 
 namespace DummyClient
 {
+    public class Packet
+    {
+        public ushort size;
+        public ushort packedId;
+    }
+
     class GameSession : Session
     {
         public override void OnConnected(EndPoint _endPoint)
         {
             Console.WriteLine($"OnConnected : {_endPoint}");
 
+            Packet packet = new Packet() { size = 4, packedId = 7 };
+
             for (int i = 0; i < 5; i++)
             {
-                byte[] sendBuff = Encoding.UTF8.GetBytes($"Hello World! {i}");
-                Send(sendBuff);
+                ArraySegment<byte> openSegment = SendBufferHelper.Open(4096);
+                byte[] buffer = BitConverter.GetBytes(packet.size);
+                byte[] buffer2 = BitConverter.GetBytes(packet.packedId);
+                Array.Copy(buffer, 0, openSegment.Array, openSegment.Offset, buffer.Length);
+                Array.Copy(buffer2, 0, openSegment.Array, openSegment.Offset + buffer.Length, buffer2.Length);
+                ArraySegment<byte> sendBuffer = SendBufferHelper.Close(packet.size);
+                
+                Send(sendBuffer);
             }
         }
 
