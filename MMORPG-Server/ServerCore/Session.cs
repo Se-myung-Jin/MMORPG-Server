@@ -14,6 +14,8 @@ namespace ServerCore
 
         int disconnected = 0;
 
+        RecvBuffer recvBuffer = new RecvBuffer(1024);
+
         SocketAsyncEventArgs recvArgs = new SocketAsyncEventArgs();
         SocketAsyncEventArgs sendArgs = new SocketAsyncEventArgs();
 
@@ -24,7 +26,7 @@ namespace ServerCore
         object sendLock = new object();
 
         public abstract void OnConnected(EndPoint _endPoint);
-        public abstract void OnRecv(ArraySegment<byte> _buffer);
+        public abstract int OnRecv(ArraySegment<byte> _buffer);
         public abstract void OnSend(int _numOfBytes);
         public abstract void OnDisconnected(EndPoint _endPoint);
 
@@ -33,8 +35,6 @@ namespace ServerCore
             socket = _socket;
 
             recvArgs.Completed += new EventHandler<SocketAsyncEventArgs>(OnRecvCompleted);
-            recvArgs.SetBuffer(new byte[1024], 0, 1024);
-
             sendArgs.Completed += new EventHandler<SocketAsyncEventArgs>(OnSendCompleted);
 
             RegisterRecv();
@@ -106,6 +106,10 @@ namespace ServerCore
 
         void RegisterRecv()
         {
+            recvBuffer.Clean();
+            ArraySegment<byte> segment = recvBuffer.WriteSegment;
+            recvArgs.SetBuffer(segment.Array, segment.Offset, segment.Count);
+
             bool pending = socket.ReceiveAsync(recvArgs);
             if (!pending)
                 OnRecvCompleted(null, recvArgs);
@@ -117,7 +121,27 @@ namespace ServerCore
             {
                 try
                 {
-                    OnRecv(new ArraySegment<byte>(_args.Buffer, _args.Offset, _args.BytesTransferred));
+                    // WritePos 이동
+                    if (recvBuffer.OnWrite(_args.BytesTransferred) == false)
+                    {
+                        Disconnect();
+                        return;
+                    }
+
+                    // 컨텐츠 쪽으로 넘겨주고 얼마나 처리했는지 받는다
+                    int processLen = OnRecv(recvBuffer.ReadSegment);
+                    if (processLen < 0 || recvBuffer.DataSize < processLen)
+                    {
+                        Disconnect();
+                        return;
+                    }
+
+                    // ReadPos 이동
+                    if (recvBuffer.OnRead(processLen) == false)
+                    {
+                        Disconnect();
+                        return;
+                    }
 
                     RegisterRecv();
                 }
