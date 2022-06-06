@@ -17,8 +17,8 @@ namespace ServerCore
             buffer = new ArraySegment<byte>(new byte[_bufferSize], 0, _bufferSize);
         }
 
-        public int DataSize { get { return writePos - readPos; } }
-        public int FreeSize { get { return buffer.Count - writePos; } }
+        public int DataSize { get { return writePos - readPos; } } // 쓰여진 공간
+        public int FreeSize { get { return buffer.Count - writePos; } } // 남은 공간
 
         public ArraySegment<byte> ReadSegment
         {
