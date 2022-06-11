@@ -10,13 +10,18 @@ namespace PacketGenerator
         static string packetEnums;
         static void Main(string[] _args)
         {
+            string packetDefinitionListPath = "PacketDefinitionList.xml";
+
             XmlReaderSettings settings = new XmlReaderSettings()
             {
                 IgnoreComments = true,
                 IgnoreWhitespace = true,
             };
 
-            using (XmlReader r = XmlReader.Create("..\\..\\..\\PacketDefinitionList.xml", settings))
+            if (_args.Length >= 1)
+                packetDefinitionListPath = _args[0];
+
+            using (XmlReader r = XmlReader.Create(packetDefinitionListPath, settings))
             {
                 r.MoveToContent();
 
