@@ -8,6 +8,23 @@ namespace PacketGenerator
 {
     class PacketFormat
     {
+        public static string fileFormat =
+@"using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Net;
+using ServerCore;
+
+public enum PacketID
+{{
+    {0}
+}}
+
+{1}
+";
+        public static string packetEnumFormat =
+@"{0} = {1},";
+
         public static string packetFormat =
 @"
 class {0}
@@ -53,7 +70,7 @@ class {0}
 
         public static string memberListFormat =
 @"
-public struct {0}
+public class {0}
 {{
     {2}
 
@@ -77,6 +94,10 @@ public List<{0}> {1}s = new List<{0}> ();
 @"this.{0} = BitConverter.{1}(s.Slice(count, s.Length - count));
 count += sizeof({2});";
 
+        public static string readByteFormat =
+@"this.{0} = ({1})segment.Array[segment.Offset + count];
+count += sizeof({1})";
+
         public static string readStringFormat =
 @"ushort {0}Len = BitConverter.ToUInt16(s.Slice(count, s.Length - count));
 count += sizeof(ushort);
@@ -97,6 +118,10 @@ for (int i = 0; i < {1}Len; i++)
         public static string writeFormat =
 @"success &= BitConverter.TryWriteBytes(s.Slice(count, s.Length - count), this.{0});
 count += sizeof({1});";
+
+        public static string writeByteFormat =
+@"segment.Array[segment.Offset + count] = (byte)this.{0};
+count += sizeof({1})";
 
         public static string writeStringFormat =
 @"ushort {0}Len = (ushort)Encoding.Unicode.GetBytes(this.{0}, 0, this.{0}.Length, segment.Array, segment.Offset + count + sizeof(ushort));
