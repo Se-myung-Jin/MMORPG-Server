@@ -4,16 +4,7 @@ using System.Net;
 
 namespace DummyClient
 {
-    public abstract class Packet
-    {
-        public ushort size;
-        public ushort packedId;
-
-        public abstract ArraySegment<byte> Serialize();
-        public abstract void Deserialize(ArraySegment<byte> _s);
-    }
-
-    class PlayerInfoReq : Packet
+    class PlayerInfoReq
     {
         public long playerId;
         public string name;
@@ -50,12 +41,7 @@ namespace DummyClient
 
         public List<SkillInfo> skills = new List<SkillInfo> ();
 
-        public PlayerInfoReq()
-        {
-            packedId = (ushort)PacketID.PlayerInfoReq;
-        }
-
-        public override void Deserialize(ArraySegment<byte> _segment)
+        public void Deserialize(ArraySegment<byte> _segment)
         {
             ushort count = 0;
 
@@ -84,7 +70,7 @@ namespace DummyClient
             }
         }
 
-        public override ArraySegment<byte> Serialize()
+        public ArraySegment<byte> Serialize()
         {
             ArraySegment<byte> segment = SendBufferHelper.Open(4096);
 
@@ -94,7 +80,7 @@ namespace DummyClient
             Span<byte> s = new Span<byte>(segment.Array, segment.Offset, segment.Count);
 
             count += sizeof(ushort);
-            success &= BitConverter.TryWriteBytes(s.Slice(count, s.Length - count), this.packedId);
+            success &= BitConverter.TryWriteBytes(s.Slice(count, s.Length - count), (ushort)PacketID.PlayerInfoReq);
             count += sizeof(ushort);
             success &= BitConverter.TryWriteBytes(s.Slice(count, s.Length - count), this.playerId);
             count += sizeof(long);
