@@ -10,7 +10,7 @@ namespace PacketGenerator
         static string packetEnums;
         static void Main(string[] _args)
         {
-            string packetDefinitionListPath = "PacketDefinitionList.xml";
+            string packetDefinitionListPath = "../PacketDefinitionList.xml";
 
             XmlReaderSettings settings = new XmlReaderSettings()
             {
