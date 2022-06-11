@@ -8,6 +8,64 @@ namespace PacketGenerator
 {
     class PacketFormat
     {
+        public static string manageFormat =
+@"using ServerCore;
+using System;
+using System.Collections.Generic;
+
+class PacketManager
+{{
+    #region Singleton
+    static PacketManager _instance;
+    public static PacketManager Instance
+    {{
+        get
+        {{
+            if (_instance == null)
+                _instance = new PacketManager();
+            return _instance;
+        }}
+    }}
+    #endregion Singleton
+
+    Dictionary<ushort, Action<PacketSession, ArraySegment<byte>>> _onRecv = new Dictionary<ushort, Action<PacketSession, ArraySegment<byte>>>();
+    Dictionary<ushort, Action<PacketSession, IPacket>> _handler = new Dictionary<ushort, Action<PacketSession, IPacket>>(); 
+    
+    public void Register()
+    {{
+{0}
+    }}
+        
+    public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)
+    {{
+        ushort count = 0;
+
+        ushort size = BitConverter.ToUInt16(buffer.Array, buffer.Offset);
+        count += 2;
+        ushort id = BitConverter.ToUInt16(buffer.Array, buffer.Offset + 2);
+        count += 2;
+
+        Action<PacketSession, ArraySegment<byte>> action = null;
+        if (_onRecv.TryGetValue(id, out action))
+            action.Invoke(session, buffer);
+    }}
+
+    void MakePacket<T>(PacketSession session, ArraySegment<byte> buffer) where T : IPacket, new()
+    {{
+        T packet = new T();
+        packet.Deserialize(buffer);
+
+        Action<PacketSession, IPacket> action = null;
+        if (_handler.TryGetValue(packet.Protocol, out action))
+            action.Invoke(session, packet);
+    }}
+}}";
+
+        public static string managerRegisterFormat =
+@"
+        _onRecv.Add((ushort)PacketID.{0}, MakePacket<{0}>);
+        _handler.Add((ushort)PacketID.{0}, PacketHandler.{0}Handler);";
+
         public static string fileFormat =
 @"using System;
 using System.Collections.Generic;

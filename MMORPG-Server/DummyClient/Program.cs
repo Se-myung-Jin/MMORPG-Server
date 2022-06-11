@@ -8,7 +8,7 @@ namespace DummyClient
 {
     class Program
     {
-        static void Main(string[] _args)
+        static void Main(string[] args)
         {
             // Domain Name System
             string host = Dns.GetHostName();
