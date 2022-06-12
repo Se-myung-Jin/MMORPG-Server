@@ -5,50 +5,50 @@ namespace ServerCore
 {
     public class Listener
     {
-        Socket listenSocket;
+        Socket _listenSocket;
 
-        Func<Session> sessionFactory;
+        Func<Session> _sessionFactory;
 
-        public void InitSocket(IPEndPoint _endPoint, Func<Session> _sessionFactory)
+        public void InitSocket(IPEndPoint endPoint, Func<Session> sessionFactory)
         {
-            listenSocket = new Socket(_endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            _listenSocket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-            listenSocket.Bind(_endPoint);
+            _listenSocket.Bind(endPoint);
 
-            listenSocket.Listen(10);
+            _listenSocket.Listen(10);
 
             // Accept 완료 처리
             SocketAsyncEventArgs args = new SocketAsyncEventArgs();
             args.Completed += new EventHandler<SocketAsyncEventArgs>(OnAcceptCompleted);
             RegisterAccept(args);
 
-            sessionFactory += _sessionFactory;
+            _sessionFactory += sessionFactory;
         }
 
-        void RegisterAccept(SocketAsyncEventArgs _args)
+        void RegisterAccept(SocketAsyncEventArgs args)
         {
             // 이전 AcceptSocket의 정보를 밀어줘야 한다
-            _args.AcceptSocket = null;
+            args.AcceptSocket = null;
 
-            bool pending = listenSocket.AcceptAsync(_args);
+            bool pending = _listenSocket.AcceptAsync(args);
             if (!pending) // 비동기로 던졌지만 바로 받았을 경우에만 호출
-                OnAcceptCompleted(null, _args);
+                OnAcceptCompleted(null, args);
         }
 
-        void OnAcceptCompleted(object _sender, SocketAsyncEventArgs _args)
+        void OnAcceptCompleted(object sender, SocketAsyncEventArgs args)
         {
-            if (_args.SocketError == SocketError.Success)
+            if (args.SocketError == SocketError.Success)
             {
-                Session session = sessionFactory.Invoke();
-                session.Start(_args.AcceptSocket);
-                session.OnConnected(_args.AcceptSocket.RemoteEndPoint);
+                Session session = _sessionFactory.Invoke();
+                session.Start(args.AcceptSocket);
+                session.OnConnected(args.AcceptSocket.RemoteEndPoint);
             }
             else
             {
-                Console.WriteLine(_args.SocketError.ToString());
+                Console.WriteLine(args.SocketError.ToString());
             }
 
-            RegisterAccept(_args);
+            RegisterAccept(args);
         }
     }
 }

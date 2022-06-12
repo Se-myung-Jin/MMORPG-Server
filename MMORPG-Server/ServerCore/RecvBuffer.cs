@@ -2,25 +2,25 @@
 {
     public class RecvBuffer
     {
-        ArraySegment<byte> buffer;
-        int readPos;
-        int writePos;
+        ArraySegment<byte> _buffer;
+        int _readPos;
+        int _writePos;
 
-        public RecvBuffer(int _bufferSize)
+        public RecvBuffer(int bufferSize)
         {
-            buffer = new ArraySegment<byte>(new byte[_bufferSize], 0, _bufferSize);
+            _buffer = new ArraySegment<byte>(new byte[bufferSize], 0, bufferSize);
         }
 
-        public int DataSize { get { return writePos - readPos; } } // 쓰여진 공간
-        public int FreeSize { get { return buffer.Count - writePos; } } // 남은 공간
+        public int DataSize { get { return _writePos - _readPos; } } // 쓰여진 공간
+        public int FreeSize { get { return _buffer.Count - _writePos; } } // 남은 공간
 
         public ArraySegment<byte> ReadSegment
         {
-            get { return new ArraySegment<byte>(buffer.Array, buffer.Offset + readPos, DataSize); }
+            get { return new ArraySegment<byte>(_buffer.Array, _buffer.Offset + _readPos, DataSize); }
         }
         public ArraySegment<byte> WriteSegment
         {
-            get { return new ArraySegment<byte>(buffer.Array, buffer.Offset + writePos, FreeSize); }
+            get { return new ArraySegment<byte>(_buffer.Array, _buffer.Offset + _writePos, FreeSize); }
         }
 
         public void Clean()
@@ -29,37 +29,37 @@
             if (dataSize == 0)
             {
                 // 남은 데이터가 없으면 복사하지 않고 커서 위치만 리셋
-                readPos = writePos = 0;
+                _readPos = _writePos = 0;
             }
             else
             {
                 // 남은 데이터가 있으면 시작 위치로 복사
-                Array.Copy(buffer.Array, buffer.Offset + readPos, buffer.Array, buffer.Offset, dataSize);
-                readPos = 0;
-                writePos = dataSize;
+                Array.Copy(_buffer.Array, _buffer.Offset + _readPos, _buffer.Array, _buffer.Offset, dataSize);
+                _readPos = 0;
+                _writePos = dataSize;
             }
         }
 
-        public bool OnRead(int _numOfBytes)
+        public bool OnRead(int numOfBytes)
         {
-            if (_numOfBytes > DataSize)
+            if (numOfBytes > DataSize)
             {
                 return false;
             }
 
-            readPos += _numOfBytes;
+            _readPos += numOfBytes;
 
             return true;
         }
 
-        public bool OnWrite(int _numOfBytes)
+        public bool OnWrite(int numOfBytes)
         {
-            if (_numOfBytes > FreeSize)
+            if (numOfBytes > FreeSize)
             {
                 return false;
             }
 
-            writePos += _numOfBytes;
+            _writePos += numOfBytes;
 
             return true;
         }

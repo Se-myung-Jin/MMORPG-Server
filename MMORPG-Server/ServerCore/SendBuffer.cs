@@ -6,45 +6,45 @@
 
         public static int ChunkSize { get; set; } = 4096 * 100;
 
-        public static ArraySegment<byte> Open(int _reserveSize)
+        public static ArraySegment<byte> Open(int reserveSize)
         {
             if (CurrentBuffer.Value == null)
                 CurrentBuffer.Value = new SendBuffer(ChunkSize);
 
-            if (CurrentBuffer.Value.FreeSize < _reserveSize)
+            if (CurrentBuffer.Value.FreeSize < reserveSize)
                 CurrentBuffer.Value = new SendBuffer(ChunkSize);
 
-            return CurrentBuffer.Value.Open(_reserveSize);
+            return CurrentBuffer.Value.Open(reserveSize);
         }
 
-        public static ArraySegment<byte> Close(int _usedSize)
+        public static ArraySegment<byte> Close(int usedSize)
         {
-            return CurrentBuffer.Value.Close(_usedSize);
+            return CurrentBuffer.Value.Close(usedSize);
         }
     }
     public class SendBuffer
     {
-        byte[] buffer;
-        int usedSize = 0;
+        byte[] _buffer;
+        int _usedSize = 0;
 
-        public int FreeSize { get { return buffer.Length - usedSize; } } // 남은 공간
+        public int FreeSize { get { return _buffer.Length - _usedSize; } } // 남은 공간
 
-        public SendBuffer(int _chunkSize)
+        public SendBuffer(int chunkSize)
         {
-            buffer = new byte[_chunkSize];
+            _buffer = new byte[chunkSize];
         }
         
-        public ArraySegment<byte> Open(int _reserveSize)
+        public ArraySegment<byte> Open(int reserveSize)
         {
-            if (_reserveSize > FreeSize)
+            if (reserveSize > FreeSize)
                 return null;
 
-            return new ArraySegment<byte>(buffer, usedSize, _reserveSize);
+            return new ArraySegment<byte>(_buffer, _usedSize, reserveSize);
         }
-        public ArraySegment<byte> Close(int _usedSize)
+        public ArraySegment<byte> Close(int usedSize)
         {
-            ArraySegment<byte> segment = new ArraySegment<byte>(buffer, usedSize, _usedSize);
-            usedSize += _usedSize;
+            ArraySegment<byte> segment = new ArraySegment<byte>(_buffer, _usedSize, usedSize);
+            _usedSize += usedSize;
 
             return segment;
         }
