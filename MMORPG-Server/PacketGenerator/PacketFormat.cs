@@ -169,7 +169,7 @@ count += sizeof({1});";
 @"ushort {0}Len = BitConverter.ToUInt16(s.Slice(count, s.Length - count));
 count += sizeof(ushort);
 this.{0} = Encoding.Unicode.GetString(s.Slice(count, {0}Len));
-count += nameLen;";
+count += {0}Len;";
 
         public static string readListFormat =
 @"this.{1}s.Clear();

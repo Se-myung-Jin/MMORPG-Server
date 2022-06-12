@@ -1,16 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <PacketDefinitionList>
-	<packet name="C_PlayerInfoReq">
-		<byte name="testByte"/>
-		<long name="playerId"/>
-		<string name="name"/>
-		<list name="skill">
-			<int name="id"/>
-			<short name="level"/>
-			<float name="duration"/>
-		</list>
+	<packet name="C_Chat">
+		<string name="chat"/>
 	</packet>
-	<packet name="S_Test">
-		<int name="testInt"/>
+	<packet name="S_Chat">
+		<int name="playerId"/>
+		<string name="chat"/>
 	</packet>
 </PacketDefinitionList>
