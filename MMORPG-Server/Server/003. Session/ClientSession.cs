@@ -13,7 +13,7 @@ namespace Server
         {
             Console.WriteLine($"OnConnected : {endPoint}");
 
-            
+            Program.Room.Enter(this);
         }
 
         public override void OnRecvPacket(ArraySegment<byte> buffer)
@@ -23,6 +23,13 @@ namespace Server
 
         public override void OnDisconnected(EndPoint endPoint)
         {
+            SessionManager.Instance.Remove(this);
+            if (Room != null)
+            {
+                Room.Leave(this);
+                Room = null;
+            }
+
             Console.WriteLine($"OnDisconnected : {endPoint}");
         }
 
