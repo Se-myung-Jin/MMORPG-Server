@@ -42,7 +42,7 @@ namespace ServerCore
 
         int _disconnected = 0;
 
-        RecvBuffer _recvBuffer = new RecvBuffer(1024);
+        RecvBuffer _recvBuffer = new RecvBuffer(65535);
 
         SocketAsyncEventArgs _recvArgs = new SocketAsyncEventArgs();
         SocketAsyncEventArgs _sendArgs = new SocketAsyncEventArgs();
@@ -76,11 +76,26 @@ namespace ServerCore
             RegisterRecv();
         }
 
-        public void Send(ArraySegment<byte> _sendBuff)
+        public void Send(List<ArraySegment<byte>> sendBuffList)
+        {
+            if (sendBuffList.Count == 0)
+                return;
+
+            lock (_sendLock)
+            {
+                foreach (ArraySegment<byte> sendBuff in sendBuffList)
+                    _sendQueue.Enqueue(sendBuff);
+
+                if (_pendingList.Count == 0)
+                    RegisterSend();
+            }
+        }
+
+        public void Send(ArraySegment<byte> sendBuff)
         {
             lock (_sendLock)
             {
-                _sendQueue.Enqueue(_sendBuff);
+                _sendQueue.Enqueue(sendBuff);
                 if (_pendingList.Count == 0)
                     RegisterSend();
             }

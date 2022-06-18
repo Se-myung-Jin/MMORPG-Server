@@ -24,7 +24,8 @@ namespace Server
 
             while (true)
             {
-                ;
+                Room.Flush();
+                Thread.Sleep(250);
             }
         }
     }
