@@ -24,7 +24,7 @@ class PacketManager
 		Register();
 	}}
 
-	Dictionary<ushort, Action<PacketSession, ArraySegment<byte>>> _onRecv = new Dictionary<ushort, Action<PacketSession, ArraySegment<byte>>>();
+	Dictionary<ushort, Func<PacketSession, ArraySegment<byte>, IPacket>> _makeFunc = new Dictionary<ushort, Func<PacketSession, ArraySegment<byte>, IPacket>>();
 	Dictionary<ushort, Action<PacketSession, IPacket>> _handler = new Dictionary<ushort, Action<PacketSession, IPacket>>();
 		
 	public void Register()
@@ -32,7 +32,7 @@ class PacketManager
 {0}
 	}}
 
-	public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer)
+	public void OnRecvPacket(PacketSession session, ArraySegment<byte> buffer, Action<PacketSession, IPacket> onRecvCallback = null)
 	{{
 		ushort count = 0;
 
@@ -41,24 +41,37 @@ class PacketManager
 		ushort id = BitConverter.ToUInt16(buffer.Array, buffer.Offset + count);
 		count += 2;
 
-		Action<PacketSession, ArraySegment<byte>> action = null;
-		if (_onRecv.TryGetValue(id, out action))
-			action.Invoke(session, buffer);
+		Func<PacketSession, ArraySegment<byte>, IPacket> func = null;
+		if (_makeFunc.TryGetValue(id, out func))
+		{{
+			IPacket packet = func.Invoke(session, buffer);
+			if (onRecvCallback != null)
+				onRecvCallback.Invoke(session, packet);
+			else
+				HandlePacket(session, packet);
+		}}
 	}}
 
-	void MakePacket<T>(PacketSession session, ArraySegment<byte> buffer) where T : IPacket, new()
+	T MakePacket<T>(PacketSession session, ArraySegment<byte> buffer) where T : IPacket, new()
 	{{
 		T pkt = new T();
 		pkt.Read(buffer);
+		
+		return pkt;
+	}}
+
+	public void HandlePacket(PacketSession session, IPacket packet)
+    {{
 		Action<PacketSession, IPacket> action = null;
-		if (_handler.TryGetValue(pkt.Protocol, out action))
-			action.Invoke(session, pkt);
+		
+		if (_handler.TryGetValue(packet.Protocol, out action))
+			action.Invoke(session, packet);
 	}}
 }}";
 
 		// {0} 패킷 이름
 		public static string managerRegisterFormat =
-@"		_onRecv.Add((ushort)PacketID.{0}, MakePacket<{0}>);
+@"		_makeFunc.Add((ushort)PacketID.{0}, MakePacket<{0}>);
 		_handler.Add((ushort)PacketID.{0}, PacketHandler.{0}Handler);";
 
 		// {0} 패킷 이름/번호 목록
