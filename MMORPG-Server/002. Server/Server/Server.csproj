@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\001. Network\ServerCore\ServerCore.csproj" />
+  </ItemGroup>
+
 </Project>
