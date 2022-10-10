@@ -11,4 +11,8 @@
     <ProjectReference Include="..\..\001. Network\ServerCore\ServerCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="001. Packet\" />
+  </ItemGroup>
+
 </Project>
