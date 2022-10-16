@@ -45,7 +45,9 @@ namespace ServerCore
                 session.OnConnected(args.AcceptSocket.RemoteEndPoint);
             }
             else
+            {
                 Console.WriteLine(args.SocketError.ToString());
+            }
 
             RegisterAccept(args);
         }
