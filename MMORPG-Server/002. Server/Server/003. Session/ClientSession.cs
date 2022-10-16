@@ -19,7 +19,7 @@ namespace Server
 
 		public override void OnConnected(EndPoint endPoint)
 		{
-			Console.WriteLine($"OnConnected : {endPoint}");
+			//Console.WriteLine($"OnConnected : {endPoint}");
 
 			Program.Room.Push(() => Program.Room.Enter(this));
 		}
@@ -39,7 +39,7 @@ namespace Server
 				Room = null;
 			}
 
-			Console.WriteLine($"OnDisconnected : {endPoint}");
+			//Console.WriteLine($"OnDisconnected : {endPoint}");
 		}
 
 		public override void OnSend(int numOfBytes)
