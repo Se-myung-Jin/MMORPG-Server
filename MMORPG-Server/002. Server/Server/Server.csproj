@@ -8,11 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="002. Room\**" />
+    <EmbeddedResource Remove="002. Room\**" />
+    <None Remove="002. Room\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\001. Network\ServerCore\ServerCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="001. Packet\" />
+    <PackageReference Include="Google.Protobuf" Version="3.20.3" />
   </ItemGroup>
 
 </Project>
