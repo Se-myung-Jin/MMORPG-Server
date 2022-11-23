@@ -34,12 +34,7 @@ namespace Server
 			Console.WriteLine($"OnConnected : {endPoint}");
 
 			// PROTO Test
-			S_Chat chat = new S_Chat()
-			{
-				Context = "안녕하세요"
-			};
 
-			Send(chat);
 		}
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)
