@@ -11,8 +11,9 @@ using Google.Protobuf;
 
 namespace Server
 {
-	class ClientSession : PacketSession
+	public class ClientSession : PacketSession
 	{
+		public Player MyPlayer { get; set; }
 		public int SessionId { get; set; }
 
 		public void Send(IMessage packet)
@@ -34,7 +35,13 @@ namespace Server
 			Console.WriteLine($"OnConnected : {endPoint}");
 
 			// PROTO Test
-
+			MyPlayer = PlayerManager.Instance.Add();
+			{
+				MyPlayer.Info.Name = $"Player_{MyPlayer.Info.PlayerId}";
+				MyPlayer.Info.PosX = 0;
+				MyPlayer.Info.PosY = 0;
+				MyPlayer.Session = this;
+			}
 		}
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)
