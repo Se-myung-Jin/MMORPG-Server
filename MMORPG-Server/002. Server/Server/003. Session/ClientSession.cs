@@ -42,6 +42,8 @@ namespace Server
 				MyPlayer.Info.PosY = 0;
 				MyPlayer.Session = this;
 			}
+
+			RoomManager.Instance.Find(1).EnterGame(MyPlayer);
 		}
 
 		public override void OnRecvPacket(ArraySegment<byte> buffer)
@@ -51,7 +53,9 @@ namespace Server
 
 		public override void OnDisconnected(EndPoint endPoint)
 		{
-			SessionManager.Instance.Remove(this);
+            RoomManager.Instance.Find(1).LeaveGame(MyPlayer.Info.PlayerId);
+
+            SessionManager.Instance.Remove(this);
 
 			Console.WriteLine($"OnDisconnected : {endPoint}");
 		}
