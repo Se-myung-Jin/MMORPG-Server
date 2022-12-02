@@ -60,7 +60,7 @@ public class CreatureController : MonoBehaviour
 
             PosInfo.State = value;
 			UpdateAnimation();
-			_updated = false;
+			_updated = true;
 		}
 	}
 
