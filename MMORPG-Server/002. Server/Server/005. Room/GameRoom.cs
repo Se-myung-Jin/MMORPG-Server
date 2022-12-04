@@ -82,6 +82,53 @@ namespace Server
             }
         }
 
+        public void HandleMove(Player player, C_Move movePacket)
+        {
+            if (player == null)
+                return;
+
+            lock (_lock)
+            {
+                // TODO : 검증
+
+                // 일단 서버에서 좌표 이동
+                PlayerInfo info = player.Info;
+                info.PosInfo = movePacket.PosInfo;
+
+                // 다른 플레이어한테도 알려준다
+                S_Move resMovePacket = new S_Move();
+                resMovePacket.PlayerId = player.Info.PlayerId;
+                resMovePacket.PosInfo = movePacket.PosInfo;
+
+                Broadcast(resMovePacket);
+            }
+        }
+
+        public void HandleSkill(Player player, C_Skill skillPacket)
+        {
+            if (player == null)
+                return;
+
+            lock (_lock)
+            {
+                PlayerInfo info = player.Info;
+                if (info.PosInfo.State != CreatureState.Idle)
+                    return;
+
+                // TODO : 스킬 사용 가능 여부 체크
+
+                // 통과
+                info.PosInfo.State = CreatureState.Skill;
+
+                S_Skill skill = new S_Skill() { Info = new SkillInfo() };
+                skill.PlayerId = info.PlayerId;
+                skill.Info.SkillId = 1;
+                Broadcast(skill);
+
+                // TODO : 데미지 판정
+            }
+        }
+
         public void Broadcast(IMessage packet)
         {
             lock (_lock)
