@@ -54,7 +54,7 @@ public class MonsterController : CreatureController
 		base.Init();
 
 		State = CreatureState.Idle;
-		Dir = MoveDir.None;
+		Dir = MoveDir.Down;
 
 		_speed = 3.0f;
 		_rangedSkill = (Random.Range(0, 2) == 0 ? true : false);
@@ -203,7 +203,7 @@ public class MonsterController : CreatureController
 	{
 		GameObject go = Managers.Resource.Instantiate("Creature/Arrow");
 		ArrowController ac = go.GetComponent<ArrowController>();
-		ac.Dir = _lastDir;
+		ac.Dir = Dir;
 		ac.CellPos = CellPos;
 
 		// 대기 시간
