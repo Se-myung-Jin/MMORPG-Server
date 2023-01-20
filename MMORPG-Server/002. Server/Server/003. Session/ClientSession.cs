@@ -34,7 +34,6 @@ namespace Server
 		{
 			Console.WriteLine($"OnConnected : {endPoint}");
 
-			// PROTO Test
 			MyPlayer = ObjectManager.Instance.Add<Player>();
 			{
 				MyPlayer.Info.Name = $"Player_{MyPlayer.Info.ObjectId}";
@@ -42,6 +41,10 @@ namespace Server
 				MyPlayer.Info.PosInfo.MoveDir = MoveDir.Down;
 				MyPlayer.Info.PosInfo.PosX = 0;
 				MyPlayer.Info.PosInfo.PosY = 0;
+
+				StatInfo stat = null;
+				DataManager.StatDict.TryGetValue(1, out stat);
+				MyPlayer.Stat.MergeFrom(stat);
 
 				MyPlayer.Session = this;
 			}
