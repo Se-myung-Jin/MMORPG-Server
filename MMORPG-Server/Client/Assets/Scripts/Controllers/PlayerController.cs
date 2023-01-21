@@ -12,6 +12,7 @@ public class PlayerController : CreatureController
 	protected override void Init()
 	{
 		base.Init();
+		AddHpBar();
 	}
 
 	protected override void UpdateAnimation()
@@ -128,8 +129,8 @@ public class PlayerController : CreatureController
 	{
 		// 대기 시간
 		_rangedSkill = true;
-        State = CreatureState.Skill;
-        yield return new WaitForSeconds(0.3f);
+		State = CreatureState.Skill;
+		yield return new WaitForSeconds(0.3f);
 		State = CreatureState.Idle;
 		_coSkill = null;
 		CheckUpdatedFlag();

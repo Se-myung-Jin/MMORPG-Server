@@ -88,52 +88,52 @@ public class MyPlayerController : PlayerController
 		}
 	}
 
-    protected override void MoveToNextPos()
-    {
-        if (!_moveKeyPressed)
-        {
-            State = CreatureState.Idle;
+	protected override void MoveToNextPos()
+	{
+		if (_moveKeyPressed == false)
+		{
+			State = CreatureState.Idle;
 			CheckUpdatedFlag();
-            return;
-        }
+			return;
+		}
 
-        Vector3Int destPos = CellPos;
+		Vector3Int destPos = CellPos;
 
-        switch (Dir)
-        {
-            case MoveDir.Up:
-                destPos += Vector3Int.up;
-                break;
-            case MoveDir.Down:
-                destPos += Vector3Int.down;
-                break;
-            case MoveDir.Left:
-                destPos += Vector3Int.left;
-                break;
-            case MoveDir.Right:
-                destPos += Vector3Int.right;
-                break;
-        }
+		switch (Dir)
+		{
+			case MoveDir.Up:
+				destPos += Vector3Int.up;
+				break;
+			case MoveDir.Down:
+				destPos += Vector3Int.down;
+				break;
+			case MoveDir.Left:
+				destPos += Vector3Int.left;
+				break;
+			case MoveDir.Right:
+				destPos += Vector3Int.right;
+				break;
+		}
 
-        if (Managers.Map.CanGo(destPos))
-        {
-            if (Managers.Object.Find(destPos) == null)
-            {
-                CellPos = destPos;
-            }
-        }
+		if (Managers.Map.CanGo(destPos))
+		{
+			if (Managers.Object.Find(destPos) == null)
+			{
+				CellPos = destPos;
+			}
+		}
 
-        CheckUpdatedFlag();
-    }
+		CheckUpdatedFlag();
+	}
 
 	protected override void CheckUpdatedFlag()
 	{
 		if (_updated)
 		{
-            C_Move movePacket = new C_Move();
-            movePacket.PosInfo = PosInfo;
-            Managers.Network.Send(movePacket);
+			C_Move movePacket = new C_Move();
+			movePacket.PosInfo = PosInfo;
+			Managers.Network.Send(movePacket);
 			_updated = false;
-        }
+		}
 	}
 }

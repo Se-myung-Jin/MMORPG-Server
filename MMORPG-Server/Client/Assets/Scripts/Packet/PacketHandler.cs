@@ -52,37 +52,35 @@ class PacketHandler
 		cc.PosInfo = movePacket.PosInfo;
 	}
 
-    public static void S_SkillHandler(PacketSession session, IMessage packet)
-    {
-        S_Skill skillPacket = packet as S_Skill;
+	public static void S_SkillHandler(PacketSession session, IMessage packet)
+	{
+		S_Skill skillPacket = packet as S_Skill;
 
-        GameObject go = Managers.Object.FindById(skillPacket.ObjectId);
-        if (go == null)
-            return;
+		GameObject go = Managers.Object.FindById(skillPacket.ObjectId);
+		if (go == null)
+			return;
 
-        PlayerController pc = go.GetComponent<PlayerController>();
-        if (pc != null)
+		PlayerController pc = go.GetComponent<PlayerController>();
+		if (pc != null)
 		{
 			pc.UseSkill(skillPacket.Info.SkillId);
 		}
-    }
+	}
 
-    public static void S_ChangeHpHandler(PacketSession session, IMessage packet)
-    {
-        S_ChangeHp changePacket = packet as S_ChangeHp;
+	public static void S_ChangeHpHandler(PacketSession session, IMessage packet)
+	{
+		S_ChangeHp changePacket = packet as S_ChangeHp;
 
-        GameObject go = Managers.Object.FindById(changePacket.ObjectId);
-        if (go == null)
-            return;
+		GameObject go = Managers.Object.FindById(changePacket.ObjectId);
+		if (go == null)
+			return;
 
-        CreatureController cc = go.GetComponent<CreatureController>();
-        if (cc != null)
-        {
-			cc.Stat.Hp = changePacket.Hp;
-			// TODO : UI
-			Debug.Log($"ChangeHP : {changePacket.Hp}");
-        }
-    }
+		CreatureController cc = go.GetComponent<CreatureController>();
+		if (cc != null)
+		{
+			cc.Hp = changePacket.Hp;
+		}
+	}
 }
 
 
