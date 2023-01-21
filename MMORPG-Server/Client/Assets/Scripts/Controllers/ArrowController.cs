@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Define;
 
-public class ArrowController : CreatureController
+public class ArrowController : BaseController
 {
 	protected override void Init()
 	{

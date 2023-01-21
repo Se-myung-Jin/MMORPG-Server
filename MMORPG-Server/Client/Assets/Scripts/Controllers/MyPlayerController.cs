@@ -117,7 +117,7 @@ public class MyPlayerController : PlayerController
 
 		if (Managers.Map.CanGo(destPos))
 		{
-			if (Managers.Object.Find(destPos) == null)
+			if (Managers.Object.FindCreature(destPos) == null)
 			{
 				CellPos = destPos;
 			}
