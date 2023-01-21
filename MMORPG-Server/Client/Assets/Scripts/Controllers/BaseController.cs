@@ -149,6 +149,9 @@ public class BaseController : MonoBehaviour
 
     protected virtual void UpdateAnimation()
     {
+        if (_animator == null || _sprite == null)
+            return;
+
         if (State == CreatureState.Idle)
         {
             switch (Dir)
@@ -238,8 +241,6 @@ public class BaseController : MonoBehaviour
         Vector3 pos = Managers.Map.CurrentGrid.CellToWorld(CellPos) + new Vector3(0.5f, 0.5f);
         transform.position = pos;
 
-        State = CreatureState.Idle;
-        Dir = MoveDir.Down;
         UpdateAnimation();
     }
 

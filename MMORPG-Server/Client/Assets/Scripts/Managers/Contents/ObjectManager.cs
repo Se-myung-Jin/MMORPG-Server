@@ -47,8 +47,16 @@ public class ObjectManager
         }
 		else if (objectType == GameObjectType.Monster)
 		{
+            GameObject go = Managers.Resource.Instantiate("Creature/Monster");
+            go.name = info.Name;
+            _objects.Add(info.ObjectId, go);
 
-		}
+            MonsterController mc = go.GetComponent<MonsterController>();
+            mc.Id = info.ObjectId;
+            mc.PosInfo = info.PosInfo;
+            mc.Stat = info.StatInfo;
+            mc.SyncPos();
+        }
 		else if (objectType == GameObjectType.Projectile)
 		{
 			GameObject go = Managers.Resource.Instantiate("Creature/Arrow");
