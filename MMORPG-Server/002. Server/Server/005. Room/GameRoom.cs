@@ -131,8 +131,8 @@ namespace Server
                 if (_monsters.Remove(objectId, out monster) == false)
                     return;
 
-                monster.Room = null;
                 Map.ApplyLeave(monster);
+                monster.Room = null;
             }
             else if (type == GameObjectType.Projectile)
             {
