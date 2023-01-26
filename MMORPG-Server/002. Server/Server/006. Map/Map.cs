@@ -96,6 +96,11 @@ namespace Server
 
 		public bool ApplyLeave(GameObject gameObject)
 		{
+			if (gameObject.Room == null)
+				return false;
+			if (gameObject.Room.Map != this)
+				return false;
+
             PositionInfo posInfo = gameObject.PosInfo;
             if (posInfo.PosX < MinX || posInfo.PosX > MaxX)
                 return false;
