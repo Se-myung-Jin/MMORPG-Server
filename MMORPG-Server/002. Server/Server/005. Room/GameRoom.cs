@@ -38,6 +38,8 @@ namespace Server
             {
                 projectile.Update();
             }
+
+            Flush();
         }
 
         public void EnterGame(GameObject gameObject)

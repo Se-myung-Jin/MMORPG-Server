@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using ServerCore;
 
 namespace Server
@@ -10,7 +8,7 @@ namespace Server
     struct JobTimerElement : IComparable<JobTimerElement>
     {
         public int execTick;
-        public Action action;
+        public IJob job;
 
         public int CompareTo(JobTimerElement other)
         {
@@ -18,22 +16,20 @@ namespace Server
         }
     }
 
-    class JobTimer
+    public class JobTimer
     {
         PriorityQueue<JobTimerElement> _pq = new PriorityQueue<JobTimerElement>();
         object _lock = new object();
 
-        public static JobTimer Instance { get; } = new JobTimer();
-
-        public void Push(Action action, int tickAfter = 0)
+        public void Push(IJob job, int tickAfter = 0)
         {
-            JobTimerElement job;
-            job.execTick = System.Environment.TickCount + tickAfter;
-            job.action = action;
+            JobTimerElement jobElement;
+            jobElement.execTick = System.Environment.TickCount + tickAfter;
+            jobElement.job = job;
 
             lock (_lock)
             {
-                _pq.Push(job);
+                _pq.Push(jobElement);
             }
         }
 
@@ -43,21 +39,21 @@ namespace Server
             {
                 int now = System.Environment.TickCount;
 
-                JobTimerElement job;
+                JobTimerElement jobElement;
 
                 lock (_lock)
                 {
                     if (_pq.Count == 0)
                         break;
 
-                    job = _pq.Peek();
-                    if (job.execTick > now)
+                    jobElement = _pq.Peek();
+                    if (jobElement.execTick > now)
                         break;
 
                     _pq.Pop();
                 }
 
-                job.action.Invoke();
+                jobElement.job.Execute();
             }
         }
     }
