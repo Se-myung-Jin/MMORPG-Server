@@ -8,6 +8,7 @@ namespace Server
     public class ServerConfig
     {
         public string dataPath;
+        public string connectionString;
     }
 
     public class ConfigManager
