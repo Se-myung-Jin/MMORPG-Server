@@ -34,6 +34,12 @@ namespace Server
 		{
 			Console.WriteLine($"OnConnected : {endPoint}");
 
+			{
+				S_Connected connectedPacket = new S_Connected();
+				Send(connectedPacket);
+			}
+
+			// TODO : 로비에서 캐릭터 선택
 			MyPlayer = ObjectManager.Instance.Add<Player>();
 			{
 				MyPlayer.Info.Name = $"Player_{MyPlayer.Info.ObjectId}";
@@ -49,6 +55,7 @@ namespace Server
 				MyPlayer.Session = this;
 			}
 
+			// TODO : 입장 요청 들어오면
 			GameRoom room = RoomManager.Instance.Find(1);
 			room.Push(room.EnterGame, MyPlayer);
 		}
