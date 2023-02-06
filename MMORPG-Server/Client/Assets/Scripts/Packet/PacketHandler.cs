@@ -100,6 +100,20 @@ class PacketHandler
 			cc.OnDead();
         }
     }
+
+    public static void S_ConnectedHandler(PacketSession session, IMessage packet)
+    {
+		Debug.Log("S_ConnectedHandler");
+		C_Login loginPacket = new C_Login();
+		loginPacket.UniqueId = SystemInfo.deviceUniqueIdentifier;
+		Managers.Network.Send(loginPacket);
+    }
+
+    public static void S_LoginHandler(PacketSession session, IMessage packet)
+    {
+		S_Login loginPacket = (S_Login)packet;
+		Debug.Log($"LoginOk({loginPacket.LoginOk})");
+    }
 }
 
 
