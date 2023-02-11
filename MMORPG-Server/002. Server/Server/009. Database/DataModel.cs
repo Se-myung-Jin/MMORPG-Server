@@ -18,6 +18,16 @@ namespace Server
     {
         public int PlayerDbId { get; set; }
         public string PlayerName { get; set; }
+
+        [ForeignKey("Account")]
+        public int AccountDbId { get; set; }
         public AccountDb Account { get; set; }
+
+        public int Level { get; set; }
+        public int Hp { get; set; }
+        public int MaxHp { get; set; }
+        public int Attack { get; set; }
+        public float Speed { get; set; }
+        public int TotalExp { get; set; }
     }
 }

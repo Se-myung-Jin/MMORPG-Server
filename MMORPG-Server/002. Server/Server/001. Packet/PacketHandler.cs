@@ -47,31 +47,20 @@ class PacketHandler
     {
         C_Login loginPacket = packet as C_Login;
         ClientSession clientSession = session as ClientSession;
+		clientSession.HandleLogin(loginPacket);
+    }
 
-		Console.WriteLine($"UniqueId({loginPacket.UniqueId})");
+	public static void C_EnterGameHandler(PacketSession session, IMessage packet)
+	{
+        C_EnterGame enterGamePacket = (C_EnterGame)packet;
+        ClientSession clientSession = (ClientSession)session;
+		clientSession.HandleEnterGame(enterGamePacket);
+    }
 
-		//TODO : 이런 저런 보안 체크
-
-		//
-		using (AppDbContext db = new AppDbContext())
-		{
-			AccountDb findAccount = db.Accounts
-				.Where(a => a.AccountName == loginPacket.UniqueId).FirstOrDefault();
-
-			if (findAccount != null)
-			{
-				S_Login loginOk = new S_Login() { LoginOk = 1 };
-				clientSession.Send(loginOk);
-			}
-			else
-			{
-				AccountDb newAccount = new AccountDb() { AccountName = loginPacket.UniqueId };
-				db.Accounts.Add(newAccount);
-				db.SaveChanges();
-
-				S_Login loginOk = new S_Login() { LoginOk = 1 };
-				clientSession.Send(loginOk);
-			}
-		}
+	public static void C_CreatePlayerHandler(PacketSession session, IMessage packet)
+	{
+        C_CreatePlayer createPlayerPacket = (C_CreatePlayer)packet;
+        ClientSession clientSession = (ClientSession)session;
+		clientSession.HandleCreatePlayer(createPlayerPacket);
     }
 }
