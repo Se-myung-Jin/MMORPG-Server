@@ -1,0 +1,38 @@
+{
+  "weapons": [
+    {
+      "id": "1",
+      "name": "견습생의 검",
+      "weaponType": "Sword",
+      "damage": "10"
+    },
+    {
+      "id": "2",
+      "name": "견습생의 활",
+      "weaponType": "Bow",
+      "damage": "5"
+    }
+  ],
+  "armors": [
+    {
+      "id": "100",
+      "name": "뼈 갑옷",
+      "armorType": "Armor",
+      "defence": "10"
+    },
+    {
+      "id": "101",
+      "name": "뼈 투구",
+      "armorType": "Helmet",
+      "defence": "5"
+    }
+  ],
+  "consumables": [
+    {
+      "id": "200",
+      "name": "HP 물약",
+      "consumableType": "Potion",
+      "damage": "10"
+    }
+  ]
+} 
