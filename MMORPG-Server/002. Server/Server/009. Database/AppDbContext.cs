@@ -9,6 +9,7 @@ namespace Server
     {
         public DbSet<AccountDb> Accounts { get; set; }
         public DbSet<PlayerDb> Players { get; set; }
+        public DbSet<ItemDb> Items { get; set; }
 
         string _connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=GameDB;";
 
