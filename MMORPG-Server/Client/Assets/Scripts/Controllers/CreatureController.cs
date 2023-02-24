@@ -53,15 +53,15 @@ public class CreatureController : BaseController
 
 	}
 
-    public virtual void OnDead()
-    {
+	public virtual void OnDead()
+	{
 		State = CreatureState.Dead;
 
-        GameObject effect = Managers.Resource.Instantiate("Effect/DieEffect");
-        effect.transform.position = transform.position;
-        effect.GetComponent<Animator>().Play("START");
-        GameObject.Destroy(effect, 0.5f);
-    }
+		GameObject effect = Managers.Resource.Instantiate("Effect/DieEffect");
+		effect.transform.position = transform.position;
+		effect.GetComponent<Animator>().Play("START");
+		GameObject.Destroy(effect, 0.5f);
+	}
 
 	public virtual void UseSkill(int skillId)
 	{
