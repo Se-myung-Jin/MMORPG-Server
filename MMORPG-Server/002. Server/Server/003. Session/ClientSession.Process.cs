@@ -78,6 +78,8 @@ namespace Server
 
                     S_Login loginOk = new S_Login() { LoginOk = 1 };
                     Send(loginOk);
+                    // 로비로 이동
+                    ServerState = PlayerServerState.ServerStateLobby;
                 }
             }
         }
@@ -103,6 +105,7 @@ namespace Server
                 MyPlayer.Session = this;
 
                 S_ItemList itemListPacket = new S_ItemList();
+                
                 // 아이템 목록을 갖고 온다
                 using (AppDbContext db = new AppDbContext())
                 {
@@ -146,6 +149,7 @@ namespace Server
 
                 if (findPlayer != null)
                 {
+                    // 이름이 겹친다
                     Send(new S_CreatePlayer());
                 }
                 else
