@@ -15,6 +15,8 @@ public class MyPlayerController : PlayerController
 
 	protected override void UpdateController()
 	{
+		GetUIKeyInput();
+
 		switch (State)
 		{
 			case CreatureState.Idle:
@@ -60,6 +62,25 @@ public class MyPlayerController : PlayerController
 	{
 		Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
 	}
+
+	void GetUIKeyInput()
+	{
+		if (Input.GetKeyDown(KeyCode.I))
+		{
+            UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+            UI_Inventory invenUI = gameSceneUI.InvenUI;
+
+			if (invenUI.gameObject.activeSelf)
+			{
+				invenUI.gameObject.SetActive(false);
+			}
+			else
+			{
+				invenUI.gameObject.SetActive(true);
+				invenUI.RefreshUI();
+			}
+        }
+    }
 
 	// 키보드 입력
 	void GetDirInput()
