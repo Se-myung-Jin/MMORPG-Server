@@ -32,5 +32,17 @@ namespace Server
 
             return null;
         }
+
+        public int? GetEmptySlot()
+        {
+            for (int slot = 0; slot < 20; slot++)
+            {
+                Item item = _items.Values.FirstOrDefault(x => x.Slot == slot);
+                if (item == null)
+                    return slot;
+            }
+
+            return null;
+        }
     }
 }

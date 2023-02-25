@@ -147,5 +147,10 @@ namespace Server
 
             room.EnterGame(this);
         }
+
+        public virtual GameObject GetOwner()
+        {
+            return this;
+        }
     }
 }
