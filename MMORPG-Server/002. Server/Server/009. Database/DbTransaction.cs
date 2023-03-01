@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Server
 {
-    public class DbTransaction : JobSerializer
+    public partial class DbTransaction : JobSerializer
     {
         public static DbTransaction Instance { get; } = new DbTransaction();
 
@@ -78,6 +78,9 @@ namespace Server
                 return;
 
             // TODO : 살짝 문제가 있긴 하다...
+            // 1) DB에다가 저장 요청
+            // 2) DB 저장 OK
+            // 3) 메모리에 적용
             int? slot = player.Inven.GetEmptySlot();
             if (slot == null)
                 return;

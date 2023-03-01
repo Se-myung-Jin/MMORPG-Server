@@ -9,18 +9,13 @@ namespace Server
     {
         public GameObject Owner { get; set; }
 
-        long _nextMoveTick = 0;
-
         public override void Update()
         {
             if (Data == null || Data.projectile == null || Owner == null || Room == null)
                 return;
 
-            if (_nextMoveTick >= Environment.TickCount64)
-                return;
-
-            long tick = (long)(1000 / Data.projectile.speed);
-            _nextMoveTick = Environment.TickCount64 + tick;
+            int tick = (int)(1000 / Data.projectile.speed);
+            Room.PushAfter(tick, Update);
 
             Vector2Int destPos = GetFrontCellPos();
             if (Room.Map.CanGo(destPos))
@@ -39,7 +34,7 @@ namespace Server
                 GameObject target = Room.Map.Find(destPos);
                 if (target != null)
                 {
-                    target.OnDamaged(this, Data.damage + Owner.Stat.Attack);
+                    target.OnDamaged(this, Data.damage + Owner.TotalAttack);
                 }
 
                 // 소멸

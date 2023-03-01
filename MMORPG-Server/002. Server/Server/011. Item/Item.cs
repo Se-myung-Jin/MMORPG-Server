@@ -36,6 +36,12 @@ namespace Server
             set { Info.Slot = value; }
         }
 
+        public bool Equipped
+        {
+            get { return Info.Equipped; }
+            set { Info.Equipped = value; }
+        }
+
         public ItemType ItemType { get; private set; }
         public bool Stackable { get; protected set; }
 
@@ -72,6 +78,7 @@ namespace Server
                 item.ItemDbId = itemDb.ItemDbId;
                 item.Count = itemDb.Count;
                 item.Slot = itemDb.Slot;
+                item.Equipped = itemDb.Equipped;
             }
 
             return item;
