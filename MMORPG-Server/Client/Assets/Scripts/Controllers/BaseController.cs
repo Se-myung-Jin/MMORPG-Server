@@ -18,9 +18,7 @@ public class BaseController : MonoBehaviour
 			if (_stat.Equals(value))
 				return;
 
-			_stat.Hp = value.Hp;
-			_stat.MaxHp = value.MaxHp;
-			_stat.Speed = value.Speed;
+			_stat.MergeFrom(value);
 		}
 	}
 

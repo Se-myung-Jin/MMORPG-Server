@@ -180,8 +180,8 @@ class PacketHandler
 		Debug.Log("아이템을 획득했습니다!");
 
         UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-        UI_Inventory invenUI = gameSceneUI.InvenUI;
-		invenUI.RefreshUI();
+        gameSceneUI.InvenUI.RefreshUI();
+        gameSceneUI.StatUI.RefreshUI();
 
         if (Managers.Object.MyPlayer != null)
             Managers.Object.MyPlayer.RefreshAdditionalStat();
@@ -200,8 +200,8 @@ class PacketHandler
         Debug.Log("아이템 착용 변경!");
 
         UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-        UI_Inventory invenUI = gameSceneUI.InvenUI;
-		invenUI.RefreshUI();
+        gameSceneUI.InvenUI.RefreshUI();
+		gameSceneUI.StatUI.RefreshUI();
 
         if (Managers.Object.MyPlayer != null)
             Managers.Object.MyPlayer.RefreshAdditionalStat();
