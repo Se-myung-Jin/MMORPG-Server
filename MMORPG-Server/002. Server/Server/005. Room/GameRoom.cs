@@ -30,11 +30,6 @@ namespace Server
 
         public void Update()
         {
-            foreach (Monster monster in _monsters.Values)
-            {
-                monster.Update();
-            }
-
             Flush();
         }
 
@@ -84,6 +79,8 @@ namespace Server
                 monster.Room = this;
 
                 Map.ApplyMove(monster, new Vector2Int(monster.CellPos.x, monster.CellPos.y));
+
+                monster.Update();
             }
             else if (type == GameObjectType.Projectile)
             {
