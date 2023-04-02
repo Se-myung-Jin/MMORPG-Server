@@ -11,8 +11,12 @@ namespace DummyClient
 
 	class Program
 	{
+		static int DummyClientCount { get; } = 500;
+
 		static void Main(string[] args)
 		{
+			Thread.Sleep(5000);
+
 			// DNS (Domain Name System)
 			string host = Dns.GetHostName();
 			IPHostEntry ipHost = Dns.GetHostEntry(host);
@@ -21,22 +25,13 @@ namespace DummyClient
 
 			Connector connector = new Connector();
 
-			connector.Connect(endPoint, 
+			connector.Connect(endPoint,
 				() => { return SessionManager.Instance.Generate(); },
-				500);
+				Program.DummyClientCount);
 
 			while (true)
 			{
-				try
-				{
-					SessionManager.Instance.SendForEach();
-				}
-				catch (Exception e)
-				{
-					Console.WriteLine(e.ToString());
-				}
-
-				Thread.Sleep(250);
+				Thread.Sleep(10000);
 			}
 		}
 	}
