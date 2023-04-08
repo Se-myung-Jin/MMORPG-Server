@@ -11,7 +11,7 @@ namespace DummyClient
 
 	class Program
 	{
-		static int DummyClientCount { get; } = 500;
+		static int DummyClientCount { get; } = 10;
 
 		static void Main(string[] args)
 		{

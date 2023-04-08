@@ -24,8 +24,6 @@ namespace Server
                 movePacket.ObjectId = Id;
                 movePacket.PosInfo = PosInfo;
                 Room.Broadcast(CellPos, movePacket);
-
-                Console.WriteLine("Move Arrow");
             }
             else
             {
