@@ -15,7 +15,7 @@ public class NetworkManager
 		_session.Send(packet);
 	}
 
-	public void Init()
+	public void ConnectToGame()
 	{
 		// DNS (Domain Name System)
 		string host = Dns.GetHostName();
