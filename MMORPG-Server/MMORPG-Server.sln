@@ -19,7 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "004. Tools", "004. Tools", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PacketGenerator", "004. Tools\PacketGenerator\PacketGenerator.csproj", "{131BCDF0-A06A-4407-827C-A8A43F914F96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountServer", "002. Server\AccountServer\AccountServer.csproj", "{2B36B5A4-AE6E-4979-AAB2-F01C0C1AC4D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountServer", "002. Server\AccountServer\AccountServer.csproj", "{2B36B5A4-AE6E-4979-AAB2-F01C0C1AC4D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedDB", "004. Tools\SharedDB\SharedDB.csproj", "{C6BA2B45-30E8-4E6F-B38E-DE76205A715F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{2B36B5A4-AE6E-4979-AAB2-F01C0C1AC4D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B36B5A4-AE6E-4979-AAB2-F01C0C1AC4D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B36B5A4-AE6E-4979-AAB2-F01C0C1AC4D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6BA2B45-30E8-4E6F-B38E-DE76205A715F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6BA2B45-30E8-4E6F-B38E-DE76205A715F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6BA2B45-30E8-4E6F-B38E-DE76205A715F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6BA2B45-30E8-4E6F-B38E-DE76205A715F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +63,7 @@ Global
 		{76F90BDF-99D3-4FF2-9DF6-2162E35702D9} = {AD06F370-6306-4738-81AB-CA0ED5D494E6}
 		{131BCDF0-A06A-4407-827C-A8A43F914F96} = {AC4AF615-A21A-414B-8FE1-B786392FCD4F}
 		{2B36B5A4-AE6E-4979-AAB2-F01C0C1AC4D0} = {792EE378-AFA9-4D48-BD03-ABB22B480529}
+		{C6BA2B45-30E8-4E6F-B38E-DE76205A715F} = {AC4AF615-A21A-414B-8FE1-B786392FCD4F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {823FD401-7D4B-45CD-8FD9-C93A8FBBCC4A}

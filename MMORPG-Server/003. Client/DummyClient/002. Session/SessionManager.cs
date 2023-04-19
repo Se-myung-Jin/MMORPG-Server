@@ -13,7 +13,7 @@ namespace DummyClient
 		object _lock = new object();
 		int _dummyId = 1;
 
-		public ServerSession Generate()
+        public ServerSession Generate()
 		{
 			lock (_lock)
 			{
